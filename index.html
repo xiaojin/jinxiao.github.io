@@ -1,0 +1,316 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="Jin Xiao, Senior Mobile Developer in Sydney. iOS, Android and payments.">
+<title>Jin Xiao</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@500;700;800&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+html{color-scheme:light}body{margin:0}
+/* Layout: a payment-terminal receipt anchors the hero; career reads as a dated ledger below. */
+:root{
+  --bg:#EDF0F3; --surface:#FFFFFF; --paper:#FBFBF8; --ink:#152230; --muted:#5B6878;
+  --line:#D3D9E0; --accent:#2445C2; --accent-soft:#E2E7F8; --ok:#1F7A4D;
+  --f-display:"Schibsted Grotesk", "Helvetica Neue", Arial, sans-serif;
+  --f-body:"IBM Plex Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --f-mono:"IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0F151C; --surface:#161E27; --paper:#1B242E; --ink:#E6EBF1; --muted:#97A3B2;
+  --line:#2A3542; --accent:#8EA6FF; --accent-soft:#1E2A4A; --ok:#5CC892; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0F151C; --surface:#161E27; --paper:#1B242E; --ink:#E6EBF1; --muted:#97A3B2;
+  --line:#2A3542; --accent:#8EA6FF; --accent-soft:#1E2A4A; --ok:#5CC892; color-scheme:dark}
+
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font:16px/1.6 var(--f-body);padding-inline:20px;padding-block:0}
+.wrap{max-width:1080px;margin:0 auto}
+a{color:var(--accent);text-underline-offset:3px}
+a:focus-visible,button:focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:4px}
+h1,h2,h3{font-family:var(--f-display);text-wrap:balance;margin:0;line-height:1.1}
+.eyebrow{font:500 12px/1 var(--f-mono);letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+
+/* nav */
+nav{display:flex;justify-content:space-between;align-items:center;gap:16px;padding-block:22px;flex-wrap:wrap}
+.mark{font:800 18px/1 var(--f-display);letter-spacing:-.01em;color:var(--ink);text-decoration:none}
+.mark span{color:var(--accent)}
+nav ul{display:flex;gap:22px;list-style:none;margin:0;padding:0;flex-wrap:wrap}
+nav ul a{color:var(--muted);text-decoration:none;font-size:14px;font-weight:500}
+nav ul a:hover{color:var(--ink)}
+
+/* hero */
+.hero{display:grid;grid-template-columns:1.25fr .9fr;gap:56px;align-items:center;padding-block:48px 72px}
+.hero > *{min-width:0}
+.hero h1{font-size:clamp(44px,7vw,84px);font-weight:800;letter-spacing:-.035em;margin-block:18px 20px}
+.hero h1 em{font-style:normal;color:var(--accent)}
+.lede{font-size:19px;color:var(--muted);max-width:34em;margin:0 0 28px}
+.lede strong{color:var(--ink);font-weight:600}
+.cta{display:flex;gap:12px;flex-wrap:wrap}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:12px 18px;border-radius:999px;font:600 15px/1 var(--f-body);text-decoration:none;border:1px solid var(--line);color:var(--ink);background:var(--surface);cursor:pointer}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:var(--surface)}
+.btn:hover{transform:translateY(-1px)}
+
+/* receipt */
+.receipt{background:var(--paper);font:13px/1.55 var(--f-mono);padding:28px 26px 34px;position:relative;
+  box-shadow:0 1px 0 var(--line),0 24px 48px -28px rgba(10,20,40,.35);transform:rotate(1.2deg);
+  -webkit-mask:radial-gradient(circle 6px at 50% 100%,transparent 98%,#000) 0 0/16px 100% repeat-x;
+          mask:radial-gradient(circle 6px at 50% 100%,transparent 98%,#000) 0 0/16px 100% repeat-x}
+.receipt .head{text-align:center;border-bottom:1px dashed var(--line);padding-bottom:14px;margin-bottom:14px}
+.receipt .head b{display:block;font-size:15px;letter-spacing:.14em}
+.receipt .row{display:flex;justify-content:space-between;gap:12px;font-variant-numeric:tabular-nums}
+.receipt .row span:last-child{text-align:right}
+.receipt .total{border-top:1px dashed var(--line);margin-top:14px;padding-top:12px;font-weight:500;font-size:14px}
+.receipt .approved{margin-top:18px;text-align:center;color:var(--ok);font-weight:500;letter-spacing:.2em}
+.receipt .muted{color:var(--muted)}
+@media (prefers-reduced-motion:no-preference){
+  .receipt{animation:print .9s cubic-bezier(.2,.7,.2,1) both}
+  @keyframes print{from{clip-path:inset(0 0 70% 0)}to{clip-path:inset(0 0 0 0)}}
+}
+
+/* sections */
+section{padding-block:64px;border-top:1px solid var(--line)}
+.sec-head{display:grid;grid-template-columns:220px 1fr;gap:40px;margin-bottom:36px}
+.sec-head h2{font-size:clamp(28px,3.4vw,40px);letter-spacing:-.02em;font-weight:700}
+.sec-head p{color:var(--muted);margin:0;max-width:40em}
+
+/* highlights */
+.highlights{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.hl{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:24px;display:flex;flex-direction:column;gap:10px;min-width:0}
+.hl .fig{font:800 40px/1 var(--f-display);letter-spacing:-.03em;color:var(--accent)}
+.hl h3{font-size:18px;font-weight:700}
+.hl p{margin:0;color:var(--muted);font-size:15px}
+
+/* ledger */
+.ledger{list-style:none;margin:0;padding:0}
+.ledger li{display:grid;grid-template-columns:220px 1fr;gap:40px;padding-block:28px;border-top:1px dashed var(--line)}
+.ledger li:first-child{border-top:0;padding-top:0}
+.ledger li > *{min-width:0}
+.when{font:500 14px/1.5 var(--f-mono);color:var(--muted);font-variant-numeric:tabular-nums}
+.when .now{display:inline-block;margin-top:6px;padding:2px 8px;border-radius:999px;background:var(--accent-soft);color:var(--accent);font-size:11px;letter-spacing:.1em;text-transform:uppercase}
+.ledger h3{font-size:21px;font-weight:700}
+.org{color:var(--muted);font-weight:500;margin:4px 0 12px}
+.ledger ul{margin:0;padding-left:18px;display:grid;gap:6px}
+.ledger ul li{display:list-item;padding:0;border:0}
+.tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:14px}
+.tag{font:500 12px/1 var(--f-mono);padding:6px 9px;border-radius:6px;border:1px solid var(--line);color:var(--muted)}
+
+/* skills */
+.skills{display:grid;grid-template-columns:repeat(4,1fr);gap:20px}
+.skills > div{min-width:0}
+.skills h3{font:500 12px/1 var(--f-mono);letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:14px}
+.skills .tags{margin:0}
+.skills .tag{color:var(--ink);background:var(--surface);font-size:13px}
+
+/* education */
+.edu{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.edu div{border-top:2px solid var(--ink);padding-top:14px;min-width:0}
+.edu h3{font-size:19px;font-weight:700}
+.edu p{margin:4px 0 0;color:var(--muted)}
+.edu .when{display:block;margin-top:10px}
+
+/* contact */
+.contact{display:grid;grid-template-columns:1.2fr 1fr;gap:40px;align-items:end}
+.contact > *{min-width:0}
+.contact h2{font-size:clamp(34px,5vw,56px);letter-spacing:-.03em;font-weight:800}
+.contact p{color:var(--muted);max-width:32em}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:22px;display:grid;gap:16px}
+.card .row{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+.card .val{font:500 15px/1.4 var(--f-mono);user-select:all;overflow-wrap:anywhere}
+.copy{font:500 13px/1 var(--f-body);padding:8px 12px;border-radius:999px;border:1px solid var(--line);background:transparent;color:var(--ink);cursor:pointer}
+footer{padding-block:32px 48px;color:var(--muted);font-size:13px;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;border-top:1px solid var(--line)}
+
+@media (max-width:860px){
+  .hero{grid-template-columns:1fr;gap:40px;padding-block:24px 56px}
+  .receipt{max-width:420px;transform:rotate(.6deg)}
+  .sec-head,.ledger li{grid-template-columns:1fr;gap:10px}
+  .highlights,.edu{grid-template-columns:1fr}
+  .skills{grid-template-columns:repeat(2,1fr)}
+  .contact{grid-template-columns:1fr}
+  nav ul{gap:16px}
+}
+@media (max-width:480px){.skills{grid-template-columns:1fr} .lede{font-size:17px}}
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <nav>
+    <a class="mark" href="#top">Jin Xiao<span>.</span></a>
+    <ul>
+      <li><a href="#work">Work</a></li>
+      <li><a href="#experience">Experience</a></li>
+      <li><a href="#skills">Skills</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </nav>
+
+  <header class="hero" id="top">
+    <div>
+      <div class="eyebrow">Senior Mobile Developer · Sydney</div>
+      <h1>I build the apps people <em>pay with.</em></h1>
+      <p class="lede">Mobile engineer with <strong>10+ years</strong> across iOS, Android and the web. Today I build payment software for POS terminals at <strong>Wpay</strong>. Before that I shipped Everyday Pay at Woolworths and helped launch the new <strong>Westpac</strong> app.</p>
+      <div class="cta">
+        <a class="btn primary" href="https://www.linkedin.com/in/xiaojin01" target="_blank" rel="noopener">LinkedIn ↗</a>
+        <a class="btn" href="#contact">Get in touch</a>
+      </div>
+    </div>
+
+    <aside class="receipt" aria-label="Career summary styled as a payment receipt">
+      <div class="head"><b>JIN XIAO</b><span class="muted">MOBILE ENGINEERING · SYD NSW</span></div>
+      <div class="row"><span>iOS · Swift / SwiftUI</span><span>2011–NOW</span></div>
+      <div class="row"><span>Android · Kotlin</span><span>POS</span></div>
+      <div class="row"><span>Web · HTML5 / JS</span><span>2011–15</span></div>
+      <div class="row"><span>Terminals</span><span>PAX · Verifone</span></div>
+      <div class="row"><span>Westpac app users</span><span>1.7M+</span></div>
+      <div class="row"><span>QR pay rollout</span><span>ALL STORES</span></div>
+      <div class="row total"><span>EXPERIENCE</span><span>10+ YRS</span></div>
+      <div class="approved">✓ APPROVED</div>
+      <div style="text-align:center;margin-top:6px" class="muted">AUTH 2026 · THANK YOU</div>
+    </aside>
+  </header>
+
+  <section id="work">
+    <div class="sec-head">
+      <div class="eyebrow">Selected work</div>
+      <div><h2>Payments and banking, at national scale</h2></div>
+    </div>
+    <div class="highlights">
+      <article class="hl">
+        <div class="fig">Every store</div>
+        <h3>Everyday Pay QR payments</h3>
+        <p>Built QR code payment in the Everyday Rewards iOS app, now live across every Woolworths store, alongside the new Gifting Store.</p>
+      </article>
+      <article class="hl">
+        <div class="fig">1.7M+</div>
+        <h3>The new Westpac app</h3>
+        <p>Delivered modular features in Swift and Redux for the relaunched Westpac mobile banking app, with a focus on UI performance.</p>
+      </article>
+      <article class="hl">
+        <div class="fig">3 platforms</div>
+        <h3>POS payment ecosystem</h3>
+        <p>Developing Android payment apps for PAX, Verifone and native Android terminals in the Wpay payments team.</p>
+      </article>
+    </div>
+  </section>
+
+  <section id="experience">
+    <div class="sec-head">
+      <div class="eyebrow">Experience</div>
+      <div><h2>Fifteen years of shipping</h2><p>From device-aware enterprise web apps to native banking and payments.</p></div>
+    </div>
+    <ol class="ledger">
+      <li>
+        <div class="when">Aug 2021 – Now<br><span class="now">Current</span></div>
+        <div>
+          <h3>Senior Mobile Developer</h3>
+          <div class="org">Wpay · Woolworths Group</div>
+          <ul>
+            <li>Develop Android apps for POS terminals: PAX, Verifone and native Android devices.</li>
+            <li>Released the Gifting Store and Everyday Pay features in Everyday Rewards for iOS.</li>
+            <li>QR code payment deployed to all Woolworths stores.</li>
+            <li>Own app releases end to end: preparation, App Store review, rollout, monitoring and notifications.</li>
+          </ul>
+          <div class="tags"><span class="tag">Kotlin</span><span class="tag">Jetpack Compose</span><span class="tag">Swift</span><span class="tag">SwiftUI</span></div>
+        </div>
+      </li>
+      <li>
+        <div class="when">Feb 2020 – Aug 2021</div>
+        <div>
+          <h3>Senior Mobile Developer</h3>
+          <div class="org">Westpac</div>
+          <ul>
+            <li>Helped launch the new Westpac mobile app, serving over 1.7 million users.</li>
+            <li>Delivered modular features in Swift and Redux; optimised UI, UX and performance.</li>
+            <li>Took part in cross-platform Android and iOS design discussions and code reviews.</li>
+          </ul>
+          <div class="tags"><span class="tag">Swift</span><span class="tag">Redux</span><span class="tag">Unit / UI testing</span></div>
+        </div>
+      </li>
+      <li>
+        <div class="when">Nov 2016 – Feb 2020</div>
+        <div>
+          <h3>Senior iOS Developer</h3>
+          <div class="org">NRMA Insurance · NBN Co · Whizz</div>
+          <ul>
+            <li>Designed, built and released new features for the NRMA Insurance app in Swift.</li>
+            <li>Built an iPhone and iPad app in Objective-C for NBN Co.</li>
+            <li>Maintained the Whizz Cleaner, Whizz Customer and property management apps.</li>
+            <li>Designed RESTful web services in Node.js for the front ends.</li>
+          </ul>
+          <div class="tags"><span class="tag">Swift</span><span class="tag">Objective-C</span><span class="tag">Node.js</span></div>
+        </div>
+      </li>
+      <li>
+        <div class="when">2011 – 2015</div>
+        <div>
+          <h3>Senior Software Developer</h3>
+          <div class="org">PwC</div>
+          <ul>
+            <li>Built enterprise HTML5 and JavaScript apps that adapted across iPhone, iPad and desktop.</li>
+            <li>Designed multi-role, device-aware interfaces for technicians, managers and executives, before responsive frameworks were mainstream.</li>
+            <li>Integrated OAuth sign-in with Facebook, Google and LinkedIn.</li>
+            <li>Migrated hybrid front ends to native iOS apps.</li>
+          </ul>
+          <div class="tags"><span class="tag">JavaScript</span><span class="tag">jQuery</span><span class="tag">Cordova</span><span class="tag">OAuth</span></div>
+        </div>
+      </li>
+    </ol>
+  </section>
+
+  <section id="skills">
+    <div class="sec-head">
+      <div class="eyebrow">Toolkit</div>
+      <div><h2>What I work with</h2></div>
+    </div>
+    <div class="skills">
+      <div><h3>Mobile</h3><div class="tags"><span class="tag">Swift</span><span class="tag">SwiftUI</span><span class="tag">Objective-C</span><span class="tag">Kotlin</span><span class="tag">Jetpack Compose</span></div></div>
+      <div><h3>Web</h3><div class="tags"><span class="tag">JavaScript</span><span class="tag">HTML5</span><span class="tag">CSS3</span><span class="tag">jQuery</span><span class="tag">Cordova</span></div></div>
+      <div><h3>Delivery</h3><div class="tags"><span class="tag">Git</span><span class="tag">Firebase</span><span class="tag">Fastlane</span><span class="tag">CircleCI</span><span class="tag">Azure CI/CD</span></div></div>
+      <div><h3>Also</h3><div class="tags"><span class="tag">REST APIs</span><span class="tag">Unit / UI testing</span><span class="tag">Ruby</span><span class="tag">Node.js</span><span class="tag">Data science</span></div></div>
+    </div>
+  </section>
+
+  <section id="education">
+    <div class="sec-head">
+      <div class="eyebrow">Education</div>
+      <div><h2>Engineering, computing, and now data</h2></div>
+    </div>
+    <div class="edu">
+      <div><h3>Master of Data Science</h3><p>UNSW Sydney</p><span class="when">2023 – 2025</span></div>
+      <div><h3>PGDip, Computer Science</h3><p>University of Edinburgh</p><span class="when">2009 – 2011</span></div>
+      <div><h3>BEng, Computer Science</h3><p>Northeastern University, China</p><span class="when">2005 – 2009</span></div>
+    </div>
+  </section>
+
+  <section id="contact">
+    <div class="contact">
+      <div>
+        <div class="eyebrow">Contact</div>
+        <h2 style="margin-top:14px">Let’s talk mobile.</h2>
+        <p>Open to conversations about mobile engineering, payments and fintech roles in Sydney.</p>
+      </div>
+      <div class="card">
+        <div class="row"><span class="eyebrow">Email</span><button class="copy" id="copy-email" type="button">Copy</button></div>
+        <div class="val" id="email">j.xiao.edin@gmail.com</div>
+        <div class="row"><span class="eyebrow">LinkedIn</span></div>
+        <a class="val" href="https://www.linkedin.com/in/xiaojin01" target="_blank" rel="noopener">linkedin.com/in/xiaojin01</a>
+      </div>
+    </div>
+  </section>
+
+  <footer><span>© 2026 Jin Xiao</span><span>Sydney, Australia</span></footer>
+</div>
+
+<script>
+document.getElementById('copy-email').addEventListener('click', function(){
+  var btn=this, text=document.getElementById('email').textContent;
+  function done(){btn.textContent='Copied';setTimeout(function(){btn.textContent='Copy'},1600)}
+  function fallback(){var r=document.createRange();r.selectNodeContents(document.getElementById('email'));var s=getSelection();s.removeAllRanges();s.addRange(r);btn.textContent='Selected'}
+  try{navigator.clipboard.writeText(text).then(done,fallback)}catch(e){fallback()}
+});
+</script>
+</body>
+</html>
